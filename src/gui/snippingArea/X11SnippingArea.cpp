@@ -44,7 +44,7 @@ QRect X11SnippingArea::selectedRectArea() const
 
 void X11SnippingArea::setFullScreen()
 {
-    setFixedSize(QDesktopWidget().size());
+    setFixedSize(getSize().toSize());
     QWidget::showFullScreen();
 }
 
@@ -78,10 +78,11 @@ void X11SnippingArea::calculateDesktopGeometry()
 		auto screenGeometry = screen->geometry();
 		auto x = screenGeometry.x() / scaleFactor;
 		auto y = screenGeometry.y() / scaleFactor;
-		auto width = (qreal)screenGeometry.width();
-		auto height = (qreal)screenGeometry.height();
 
-        mDesktopGeometry = mDesktopGeometry.united({x, y, width, height});
+		qreal width = screenGeometry.width();
+		qreal height = screenGeometry.height();
+
+		mDesktopGeometry |= QRectF{x, y, width, height};
 	}
 }
 
